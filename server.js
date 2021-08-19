@@ -1,40 +1,70 @@
+const { Socket } = require('dgram');
+const { create } = require('domain');
 const express = require('express');
 const app = express();
 const http = require('http');
+const { createBrotliCompress } = require('zlib');
 const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",
-    // methods: ["GET", "POST"],
-    
+   
   }
 });
 
-
-
-
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/index.html');
-// });
-
-io.of("/").adapter.on("create-room", (room) => {
-  console.log(`room ${room} was created`);
-});
+let users = [];
+let roomNumber= 0
 
 io.on('connection',  (socket) => {
-  console.log('a user connected');
-  socket.emit("hello", "world");
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected');
-  // });
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
+
+//   socket.on("join server", (username) =>{
+// const user = {
+//   username,
+//   id:socket.id,
+// }
+// user.push(user);
+// io.emit("New user", user)
+//   })
+
+  socket.on("join room", (roomNumber)=>{
+    console.log(roomNumber.roomNumber.roomNum)
+    socket.join(roomNumber.roomNumber.roomNum);
+    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber)
+  })
+
+  socket.on('NewRoom', () => {
+    roomNumber++;
+    socket.join(roomNumber);
+    socket.emit("NewRoom", roomNumber)
   });
 
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-    });
+
+
+  
+
+  socket.on('get data', (data) => {
+    io.to(data.roomNumber).emit('get data', data)
+    // console.log('message: ' + data.roomNumber);
+  });
+
+  socket.on('changeLife', (data) => {
+    io.to(data.roomNumber).emit('changeLife', data)
+    console.log('message: ' + data.roomNumber);
+  });
+
+  socket.on('change CDMG', (data) => {
+    io.to(data.roomNumber).emit('change CDMG', data)
+    console.log('message: ' + data.roomNumber);
+  });
+
+
+  console.log('a user connected');
+  
+  socket.on('startGame', (data) => {
+    io.to(data.roomNumber).emit('startGame', data)
+    console.log('message: ' + data.players);
+  });
 
 
 });
