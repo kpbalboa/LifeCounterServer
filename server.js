@@ -45,21 +45,25 @@ io.on('connection',  (socket) => {
 
   socket.on('get data', (data) => {
     io.to(data.roomNumber).emit('get data', data)
-    // console.log('message: ' + data.roomNumber);
   });
 
   socket.on('changeLife', (data) => {
     io.to(data.roomNumber).emit('changeLife', data)
-    console.log('message: ' + data.roomNumber);
+   
   });
   socket.on('changePoison', (data) => {
     io.to(data.roomNumber).emit('changePoison', data)
-    console.log('message: ' + data.roomNumber);
+    
   });
 
   socket.on('change CDMG', (data) => {
     io.to(data.roomNumber).emit('change CDMG', data)
-    console.log('message: ' + data.roomNumber);
+   
+  });
+
+  socket.on('changeGame', (data) => {
+    io.to(data.roomNumber).emit('changeGame', data)
+   
   });
 
 
@@ -67,7 +71,6 @@ io.on('connection',  (socket) => {
   
   socket.on('startGame', (data) => {
     io.to(data.roomNumber).emit('startGame', data)
-    console.log('message: ' + data.players);
   });
 
 
