@@ -28,9 +28,9 @@ io.on('connection',  (socket) => {
 //   })
 
   socket.on("join room", (roomNumber)=>{
-    console.log(roomNumber.roomNumber.roomNum)
+    console.log(roomNumber.CImage)
     socket.join(roomNumber.roomNumber.roomNum);
-    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber)
+    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber, roomNumber.commander, roomNumber.CImage)
   })
 
   socket.on('NewRoom', () => {
@@ -50,6 +50,10 @@ io.on('connection',  (socket) => {
 
   socket.on('changeLife', (data) => {
     io.to(data.roomNumber).emit('changeLife', data)
+    console.log('message: ' + data.roomNumber);
+  });
+  socket.on('changePoison', (data) => {
+    io.to(data.roomNumber).emit('changePoison', data)
     console.log('message: ' + data.roomNumber);
   });
 
