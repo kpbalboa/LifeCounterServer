@@ -1,10 +1,18 @@
-const { Socket } = require('dgram');
-const { create } = require('domain');
+// const { Socket } = require('dgram');
+// const { create } = require('domain');
 const express = require('express');
 const app = express();
 const http = require('http');
-const { createBrotliCompress } = require('zlib');
 const server = http.createServer(app);
+const databaseRoutes = require("./routes")
+app.use('/', databaseRoutes)
+var bodyParser = require('body-parser')
+
+const cors = require('cors')
+app.use(cors());
+app.use(express.json());
+
+
 
 const io = require("socket.io")(server, {
   cors: {
