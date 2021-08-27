@@ -30,6 +30,7 @@ databaseRoutes.post('/createUser', (req, res)=>{
           req.body.password   
       ]).then(result => {
         res.send(result);
+        pool.query(`CREATE TABLE ${req.body.user} (opponent1 CITEXT, opponent2 CITEXT,opponent3 CITEXT, commander2 CITEXT, commander3 CITEXT, lifeGain Int, place Int, win varchar, commanderDelt1 Int, commanderDelt2 Int, commanderDelt3 Int, commanderDeltBy1 Int, commanderDeltBy2 Int, commanderDeltBy3 Int, turnsAlive Int, Turns Int, KilledWho varchar, Killed Int, KilledDmg Int, KilledCmd Int, KilledPoison Int, KilledBy VARCHAR, KilledHow VARCHAR);`)
       }) .catch(e => {
         console.log(e);
         res.send(e)
@@ -38,7 +39,6 @@ databaseRoutes.post('/createUser', (req, res)=>{
 
 databaseRoutes.post('/login', (req, res)=>{
   pool.query(
-    // `select * from "users" WHERE email = 'kpbalboa@gmail.com' AND user_password = '78iu&*IU`
     `select * from "users" WHERE email = '${req.body.email}' AND user_password = '${req.body.password}'`
   ).then(result => {
     res.send(result);

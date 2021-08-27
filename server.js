@@ -26,19 +26,11 @@ let roomNumber= 0
 
 io.on('connection',  (socket) => {
 
-//   socket.on("join server", (username) =>{
-// const user = {
-//   username,
-//   id:socket.id,
-// }
-// user.push(user);
-// io.emit("New user", user)
-//   })
 
   socket.on("join room", (roomNumber)=>{
-    console.log(roomNumber.CImage)
+    console.log(roomNumber.roomNumber.roomNum)
     socket.join(roomNumber.roomNumber.roomNum);
-    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber, roomNumber.commander, roomNumber.CImage)
+    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber, roomNumber.commander, roomNumber.CImage, roomNumber.LoggedIn, roomNumber.UserName)
   })
 
   socket.on('NewRoom', () => {
@@ -55,19 +47,19 @@ io.on('connection',  (socket) => {
     io.to(data.roomNumber).emit('get data', data)
   });
 
-  socket.on('changeLife', (data) => {
-    io.to(data.roomNumber).emit('changeLife', data)
+  // socket.on('changeLife', (data) => {
+  //   io.to(data.roomNumber).emit('changeLife', data)
    
-  });
-  socket.on('changePoison', (data) => {
-    io.to(data.roomNumber).emit('changePoison', data)
+  // });
+  // socket.on('changePoison', (data) => {
+  //   io.to(data.roomNumber).emit('changePoison', data)
     
-  });
+  // });
 
-  socket.on('change CDMG', (data) => {
-    io.to(data.roomNumber).emit('change CDMG', data)
+  // socket.on('change CDMG', (data) => {
+  //   io.to(data.roomNumber).emit('change CDMG', data)
    
-  });
+  // });
 
   socket.on('changeGame', (data) => {
     io.to(data.roomNumber).emit('changeGame', data)
