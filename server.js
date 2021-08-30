@@ -26,7 +26,6 @@ let roomNumber= 0
 
 io.on('connection',  (socket) => {
 
-
   socket.on("join room", (roomNumber)=>{
     console.log(roomNumber.roomNumber.roomNum)
     socket.join(roomNumber.roomNumber.roomNum);
@@ -47,19 +46,6 @@ io.on('connection',  (socket) => {
     io.to(data.roomNumber).emit('get data', data)
   });
 
-  // socket.on('changeLife', (data) => {
-  //   io.to(data.roomNumber).emit('changeLife', data)
-   
-  // });
-  // socket.on('changePoison', (data) => {
-  //   io.to(data.roomNumber).emit('changePoison', data)
-    
-  // });
-
-  // socket.on('change CDMG', (data) => {
-  //   io.to(data.roomNumber).emit('change CDMG', data)
-   
-  // });
 
   socket.on('changeGame', (data) => {
     io.to(data.roomNumber).emit('changeGame', data)
