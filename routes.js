@@ -44,7 +44,7 @@ databaseRoutes.post('/login', (req, res)=>{
     res.send(result);
   }) .catch(e => {
     console.log(e);
-    res.send(e)
+    // res.send(e)
   });
 });
 
@@ -95,17 +95,24 @@ databaseRoutes.post('/subGameData', function (req, res) {
         // console.log(res)
       }) .catch(e => {
         // console.log(e);
-        res.send(e)
+        
       });;
 })
  
 
-databaseRoutes.post('/getGameData', function (req, res) {
+databaseRoutes.post('/getGameData', async function (req, res) {
+  let favCmd;
+  let GamesPlayed;
+  let wins;
+  let dammage;
  
-  pool.query(
+await pool.query(
     `SELECT
     "commander",
-    COUNT ("commander") as cmdCount
+    COUNT ("commander") as cmdCount,
+    SUM("damagedelt") as damage,
+	SUM ( case when win is null then 0 else 1 end) as wins
+
   FROM
   ${req.body.user}
     GROUP BY
@@ -113,15 +120,58 @@ databaseRoutes.post('/getGameData', function (req, res) {
     order by CmdCount desc;`
     
   ).then(result => {
-    res.send(result)
+    // res.send(result)
+    favCmd = result
   }) .catch(e => {
     console.log(e);
-    res.send(e)
+    
   })
 
+  await pool.query(
+    `SELECT 
+    COUNT(*) FROM
+  ${req.body.user}`
+    
+  ).then(result => {
+    // res.send(result)
+    GamesPlayed = result.rows[0].count
+  }) .catch(e => {
+    console.log(e);
+    
+  })
 
+  
+  await pool.query(
+    `SELECT COUNT(*) FROM ${req.body.user} WHERE win IS NOT NULL`
+    
+  ).then(result => {
+    wins = result.rows[0].count
+  }) .catch(e => {
+    console.log(e);
+    
+  })
+  
+ 
+
+  await pool.query(
+    `SELECT SUM(damagedelt) AS delt, SUM(damagetaken) AS taken, SUM(damagedself) AS self, SUM(lifegain) AS lifegain, SUM(killed) AS kills, SUM(killeddmg) AS dmgkills, SUM(killedcmd) AS cmdkills, SUM(killedpoison) as poisonkills, ROUND(AVG(turns)::numeric,2) AS avgturns FROM ${req.body.user}`
+    
+  ).then(result => {
+    dammage = result.rows
+  }) .catch(e => {
+    console.log(e);
+    
+  })
+  
+// if(favCmd != undefined){
+// res.send({"f1":favCmd.rows, "GamesPlayed":GamesPlayed, "wins": wins, "dammage": dammage})
+// } else{
+//   res.send("no Game Data")
+// }
+// })
+
+res.send({"f1":favCmd.rows, "GamesPlayed":GamesPlayed, "wins": wins, "dammage": dammage})
 })
-
 
 
 module.exports= databaseRoutes;
