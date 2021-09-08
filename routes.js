@@ -175,5 +175,3 @@ res.send({"f1":favCmd.rows, "GamesPlayed":GamesPlayed, "wins": wins, "dammage": 
 
 
 module.exports= databaseRoutes;
-
-

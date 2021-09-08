@@ -29,7 +29,7 @@ io.on('connection',  (socket) => {
   socket.on("join room", (roomNumber)=>{
     console.log(roomNumber.roomNumber.roomNum)
     socket.join(roomNumber.roomNumber.roomNum);
-    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber, roomNumber.commander, roomNumber.CImage, roomNumber.LoggedIn, roomNumber.UserName)
+    io.to(roomNumber.roomNumber.roomNum).emit("join room", roomNumber.roomNumber, roomNumber.commander, roomNumber.CImage, roomNumber.LoggedIn, roomNumber.UserName, roomNumber.partner, roomNumber.partnerImg)
   })
 
   socket.on('NewRoom', () => {
